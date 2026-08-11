@@ -77,7 +77,7 @@ export default async function SettingsPage() {
         <dl className="space-y-3 text-body">
           <div className="flex items-baseline justify-between gap-4">
             <dt>Row actions</dt>
-            <dd className="text-muted">Right-click, long-press, or the dots</dd>
+            <dd className="text-muted">Right-click, long-press, or Shift+F10</dd>
           </div>
           <div className="flex items-baseline justify-between gap-4">
             <dt>Close a menu or dialog</dt>

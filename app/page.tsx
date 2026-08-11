@@ -127,7 +127,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Search
           </div>
 
           <p className="text-label text-muted">
-            Right-click a row (or tap the dots) to open, edit, or delete it.
+            Right-click a row to open, edit, or delete it.
           </p>
         </>
       )}

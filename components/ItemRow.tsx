@@ -48,7 +48,7 @@ export function ItemRow({
       >
         <Link
           href={`/items/${item.id}`}
-          className={`block rounded-card border-l-[3px] bg-card py-4 pr-12 pl-4 shadow-card transition-colors duration-[120ms] hover:bg-raised active:opacity-80 sm:py-5 sm:pl-5 ${
+          className={`block rounded-card border-l-[3px] bg-card px-4 py-4 shadow-card transition-colors duration-[120ms] hover:bg-raised active:opacity-80 sm:px-5 sm:py-5 ${
             settled ? "border-l-settled" : "border-l-rule"
           } ${flash ? "flash" : ""}`}
         >

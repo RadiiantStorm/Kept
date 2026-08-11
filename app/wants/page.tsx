@@ -104,7 +104,7 @@ export default async function WantsPage({ searchParams }: { searchParams: Search
           </div>
 
           <p className="text-label text-muted">
-            Right-click a row (or tap the dots) to edit it, mark it bought, or take it off.
+            Right-click a row to edit it, mark it bought, or take it off.
           </p>
         </>
       )}

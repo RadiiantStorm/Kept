@@ -89,8 +89,9 @@ so you know how stale it is, plus a link to find it again. There is no clock —
 *would* cost per month at various horizons. Marking something bought carries it over to
 Kept, pre-filled, and takes it off the list.
 
-Every row in both lists answers to a right-click, a long-press, or the dots at its right
-edge: open, edit, delete. The menu takes arrow keys and closes on Escape.
+Every row in both lists answers to a right-click — or a long-press on a touch screen, or
+Shift+F10 on a focused row: open, edit, delete. The menu takes arrow keys and closes on
+Escape.
 
 Appearance lives in **Settings**: light, dark, or match the system. The choice is a cookie
 the server reads, so the first paint is already right and the page never flashes.

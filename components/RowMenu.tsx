@@ -18,21 +18,10 @@ export type RowMenuItem =
 const MENU_WIDTH = 200;
 const ITEM_HEIGHT = 36;
 
-function DotsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden focusable="false">
-      <circle cx="5.5" cy="12" r="1.7" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.7" fill="currentColor" />
-      <circle cx="18.5" cy="12" r="1.7" fill="currentColor" />
-    </svg>
-  );
-}
-
 /**
- * Wraps a list row and gives it a menu, reachable three ways: right-click
- * anywhere on the row, long-press on a touch screen (which fires the same
- * `contextmenu` event), or the always-visible button for anyone using a keyboard
- * or a screen reader.
+ * Wraps a list row and gives it a menu on `contextmenu`: right-click, long-press
+ * on a touch screen, or Shift+F10 / the Menu key on a focused row — all three
+ * fire the same event.
  */
 export function RowMenu({
   id,
@@ -49,13 +38,14 @@ export function RowMenu({
   const [confirming, setConfirming] = useState<RowMenuItem | null>(null);
   const [cursor, setCursor] = useState(0);
 
-  const trigger = useRef<HTMLButtonElement>(null);
+  const row = useRef<HTMLDivElement>(null);
   const menu = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
 
   const close = useCallback((restoreFocus = true) => {
     setAt(null);
-    if (restoreFocus) trigger.current?.focus();
+    // Hand focus back to the row itself, since there is no button to return to.
+    if (restoreFocus) row.current?.querySelector<HTMLElement>("a, button")?.focus();
   }, []);
 
   const openAt = (x: number, y: number) => {
@@ -122,30 +112,20 @@ export function RowMenu({
 
   return (
     <div
+      ref={row}
       className="relative"
       onContextMenu={(event) => {
         event.preventDefault();
-        openAt(event.clientX, event.clientY);
+        // The keyboard Menu key reports (0, 0); anchor to the row instead.
+        if (event.clientX === 0 && event.clientY === 0) {
+          const box = event.currentTarget.getBoundingClientRect();
+          openAt(box.left + 24, box.bottom - 8);
+        } else {
+          openAt(event.clientX, event.clientY);
+        }
       }}
     >
       {children}
-
-      <button
-        ref={trigger}
-        type="button"
-        aria-label={`Actions for ${name}`}
-        aria-haspopup="menu"
-        aria-expanded={at !== null}
-        onClick={(event) => {
-          event.preventDefault();
-          if (at) return close();
-          const box = event.currentTarget.getBoundingClientRect();
-          openAt(box.right - MENU_WIDTH, box.bottom + 4);
-        }}
-        className="absolute top-1/2 right-2 flex size-9 -translate-y-1/2 items-center justify-center rounded-card text-muted transition-opacity duration-[120ms] hover:opacity-70 active:opacity-60"
-      >
-        <DotsIcon />
-      </button>
 
       {at
         ? createPortal(
