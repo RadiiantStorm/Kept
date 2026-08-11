@@ -30,6 +30,30 @@ stays empty. The file is gitignored, so your own data is never committed.
 
 To reach it from your phone on the same wifi, use the network address `pnpm dev` prints.
 
+## Using it every day
+
+`pnpm dev` is the development server — slower, and it expects a terminal you keep an eye
+on. For everyday use, double-click **`Kept.cmd`** in the project folder instead.
+
+It builds the app the first time (about a minute), then serves the fast production build on
+http://localhost:3000 and opens your browser. Leave its window running, minimised, for as
+long as you want the app available; closing it stops the server. Double-clicking it again
+while it is already running just reopens the browser.
+
+Two things worth doing once:
+
+- **Pin it.** Right-click `Kept.cmd` → *Send to* → *Desktop (create shortcut)*, or pin the
+  shortcut to your taskbar.
+- **Install it as an app.** With Kept open in Edge or Chrome, use the install icon in the
+  address bar (or ⋯ → *Apps* → *Install this site as an app*). You get a proper window with
+  its own icon and no browser chrome.
+
+To start it automatically when you log in, press `Win+R`, run `shell:startup`, and drop a
+shortcut to `Kept.cmd` in the folder that opens.
+
+After you change the code — or pull a new version — run `pnpm rebuild` so the production
+build picks it up.
+
 | Command      | What it does                            |
 | ------------ | --------------------------------------- |
 | `pnpm dev`   | Serves the app at http://localhost:3000 |
