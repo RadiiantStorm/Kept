@@ -1,0 +1,6 @@
+# Keep line endings sane for anyone who clones this on a different OS.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.woff2 binary

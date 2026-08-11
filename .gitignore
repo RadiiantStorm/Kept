@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.next-*/
+out/
+
+# Editor and agent scratch
+.claude/
+.vscode/
+.idea/
+next-env.d.ts
+*.tsbuildinfo
+
+# The database is local state, never source.
+data/

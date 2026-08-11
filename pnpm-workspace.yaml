@@ -1,0 +1,6 @@
+# Not a monorepo — this file is where pnpm 10+ reads project settings from.
+# better-sqlite3 needs its install script to fetch (or compile) the native addon.
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  sharp: true

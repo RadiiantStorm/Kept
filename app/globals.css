@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@theme {
+  /**
+   * Neutral charcoal. Surfaces are separated by a hairline border rather than a
+   * drop shadow, and every grey is blue-neutral — no green cast anywhere. The
+   * light values are the defaults; the dark set overrides them further down.
+   */
+  --color-page: #f5f6f8;
+  --color-card: #ffffff;
+  /* One step up from the card, for hover and for the selected state. */
+  --color-raised: #f0f1f4;
+  --color-ink: #16181d;
+  --color-muted: #5d6069;
+  --color-rule: #e3e5ea;
+
+  /* The one accent: the shelf tag and the primary button, nothing else. */
+  --color-tag: #175cd3;
+  --color-settled: #0f7a48;
+  --color-danger: #b42318;
+  --color-flash: rgba(46, 144, 250, 0.16);
+  /* The drop half of the card shadow. A variable because Tailwind inlines the
+     shadow token itself — only nested var() references stay live per theme. */
+  --color-lift: rgba(16, 18, 22, 0.04);
+
+  /* The tag carries its own text colour, unchanged by the theme. */
+  --color-tag-ink: #ffffff;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* 13 / 15 / 18 / 28 / 56 */
+  --text-label: 13px;
+  --text-label--line-height: 1.4;
+  --text-body: 15px;
+  --text-body--line-height: 1.5;
+  --text-lede: 18px;
+  --text-lede--line-height: 1.4;
+  --text-figure: 28px;
+  --text-figure--line-height: 1.1;
+  --text-hero: 56px;
+  --text-hero--line-height: 1;
+
+  /* 4px base rhythm, locked to pixels. */
+  --spacing: 4px;
+
+  --radius-card: 10px;
+  --radius-control: 8px;
+
+  /**
+   * The "shadow" is really a hairline ring plus a whisper of lift. Because it is
+   * one token, every existing `shadow-card` picks up the new treatment, and it
+   * follows the theme through `--color-rule`.
+   */
+  --shadow-card: 0 0 0 1px var(--color-rule), 0 1px 2px var(--color-lift);
+}
+
+/**
+ * Every number in the app, without exception: monospaced and tabular, so that a
+ * column of rand lines up on the decimal point.
+ */
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+}
+
+/**
+ * Dark mode: near-black page, panels lifted a step out of it, hairline borders
+ * doing the separating. The tag yellow is the one constant — it is the accent in
+ * both themes and always carries dark text.
+ *
+ * These rules are deliberately unlayered so they outrank the `@theme` defaults,
+ * and `[data-theme]` (set from a cookie on the server, so there is no flash)
+ * always beats the system preference.
+ */
+:root {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-page: #0c0e12;
+    --color-card: #13161b;
+    --color-raised: #1a1e25;
+    --color-ink: #ecedee;
+    --color-muted: #94989f;
+    --color-rule: #23272f;
+    --color-settled: #17b26a;
+    --color-danger: #ff7b72;
+    --color-flash: rgba(46, 144, 250, 0.2);
+    --color-lift: rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-page: #0c0e12;
+  --color-card: #13161b;
+  --color-raised: #1a1e25;
+  --color-ink: #ecedee;
+  --color-muted: #94989f;
+  --color-rule: #23272f;
+  --color-settled: #17b26a;
+  --color-danger: #ff7b72;
+  --color-flash: rgba(46, 144, 250, 0.2);
+  --color-lift: rgba(0, 0, 0, 0.35);
+}
+
+/**
+ * The shelf tag's figure. 56px is the anchor; on a 390px phone it steps down
+ * rather than pushing a horizontal scrollbar onto the page.
+ */
+@utility tag-figure {
+  font-size: clamp(40px, 12vw, var(--text-hero));
+  line-height: 1;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Accessibility floor: every interactive element shows where it is. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: var(--radius-control);
+  }
+
+  [disabled],
+  [aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Date and number inputs must not fall back to a proportional face. */
+  input[type="date"],
+  input[inputmode="decimal"] {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* The only two animations in the app. */
+@keyframes kept-flash {
+  from {
+    background-color: var(--color-flash);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.flash {
+  animation: kept-flash 600ms ease-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
